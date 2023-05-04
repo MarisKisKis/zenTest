@@ -60,21 +60,3 @@ func CreateUser(a *User) (uint, error) {
 	}
 	return a.ID, nil
 }
-
-func GetUser(id string) (*User, error) {
-	var user User
-	res := db.First(&user, id)
-	if res.RowsAffected == 0 {
-		return nil, errors.New("user not found")
-	}
-	return &user, nil
-}
-
-func DeleteUser(id string) error {
-	var deleteUser User
-	result := db.Where(id).Delete(&deleteUser)
-	if result.RowsAffected == 0 {
-		return errors.New("user data not deleted")
-	}
-	return nil
-}

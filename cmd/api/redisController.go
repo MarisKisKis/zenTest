@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 	"net/http"
@@ -17,18 +16,22 @@ func postIncr(c *gin.Context) {
 		})
 		return
 	}
+	// connection to Redis
 	client := rClient()
 	ctx := context.Background()
 	err := client.Set(ctx, incr.Key, incr.Value, 0).Err()
 	if err != nil {
 		panic(err)
 	}
-
-	val, err := client.Get(ctx, incr.Key).Result()
+	// incrementing by key
+	incrByKey, err := client.Incr(ctx, incr.Key).Result()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(incr.Key, val)
+	// returning value in json format
+	var value incrValue
+	value.Value = incrByKey
+	c.JSON(http.StatusOK, value)
 	return
 }
 
@@ -40,4 +43,8 @@ func rClient() *redis.Client {
 	})
 
 	return client
+}
+
+type incrValue struct {
+	Value int64 `json:"value"`
 }

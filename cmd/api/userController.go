@@ -13,6 +13,7 @@ func home(c *gin.Context) {
 	return
 }
 
+// saving user to database and returning its id
 func postUser(c *gin.Context) {
 	var user database.User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -31,37 +32,6 @@ func postUser(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"user": res,
-	})
-	return
-}
-
-func getUser(c *gin.Context) {
-	id := c.Param("id")
-	user, err := database.GetUser(id)
-
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "user not found",
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"user": user,
-	})
-	return
-}
-
-func deleteUser(c *gin.Context) {
-	id := c.Param("id")
-	err := database.DeleteUser(id)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "user not found",
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "user deleted successfully",
 	})
 	return
 }

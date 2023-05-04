@@ -20,11 +20,12 @@ func postSha512(c *gin.Context) {
 		return
 	}
 	hexString := makeHexString(sign)
-	c.String(http.StatusOK, "hexString: ", hexString)
+	c.JSON(http.StatusOK, hexString)
 	return
 }
 
 func makeHexString(sign model.Sign) string {
+	// sha512 encoding
 	inputText := []byte(sign.Text)
 	inputKey := []byte(sign.Key)
 	h := hmac.New(sha512.New, inputKey)
@@ -35,6 +36,7 @@ func makeHexString(sign model.Sign) string {
 		result += fmt.Sprintf("%02X", r)
 	}
 	log.Println(result)
+	// hex string encoding
 	encodedStr := hex.EncodeToString([]byte(result))
 	return encodedStr
 }
