@@ -2,7 +2,7 @@
 
 Running Redis With Docker Locally
 
-Let’s get started with this tutorial and download the redis docker image and run it using the following 2 docker commands:
+To get started with POST `/redis/incr` endpoint use the following 2 docker commands:
 
 $ docker pull redis
 $ docker run --name redis-test-instance -p 6379:6379 -d redis
